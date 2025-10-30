@@ -1,0 +1,48 @@
+---
+title: "Practice Worksheet: Gerrymandering"
+format: typst
+---
+
+Recall the 3 quantitative approaches to measuring gerrymandering discussed in lecture:\
+1. Mean - Median Score (Grofman, 1983)\
+2. Efficiency Gap (Stephanopolous and McGee, 2015)\
+3. Ensembles / Extreme Outliers\
+Use the following table to practice applying the first two techniques.\
+
+| District | D Votes | R Votes | Result  |
+|:---------:|:-------:|:-------:|:--------|
+| 1 | 62 | 38 | D wins |
+| 2 | 55 | 45 | D wins |
+| 3 | 44 | 56 | R wins |
+| 4 | 47 | 53 | R wins |
+| 5 | 46 | 54 | R wins |
+| **Total** | **254** | **246** |          |
+
+```{r}
+#| message: false
+#| echo: false
+library(tidyverse)
+votes <- tibble(District = 1:5,
+                d_votes = c(62, 55, 44, 47, 46),
+                r_votes = c(38, 45, 56, 53, 54),
+                result = c(rep("D wins", 2), rep("R wins", 3)))
+```
+
+### Q1. Mean-Median Score
+
+Calculate the mean-median score associated with this particular district breakdown of votes.
+
+```{r}
+# add code for Q1 here
+```
+
+### Q2. Efficiency Gap
+
+Calculate the Efficiency Gap (EG) associated with this particular district breakdown of votes.
+
+*Tip*: it may be helpful to write a function that takes a vector of votes across districts for party A and vector of votes for the party B and returns a vector of the number votes wasted by party A across districts.
+
+
+```{r}
+# add code for Q2 here
+```

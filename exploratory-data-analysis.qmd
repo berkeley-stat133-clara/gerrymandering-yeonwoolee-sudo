@@ -1,0 +1,28 @@
+---
+title: Exploratory Data Analysis
+format: typst
+---
+
+### Question 1
+
+Put your question here.
+
+### Answer 1
+
+Put your answer here.
+
+### Question 2
+
+Put your question here.
+
+### Answer 2
+
+Put your answer here.
+
+### Question 3
+
+Put your question here.
+
+### Answer 3
+
+Put your answer here.

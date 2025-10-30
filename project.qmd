@@ -1,0 +1,97 @@
+---
+title: "Project: Gerrymandering"
+format: typst
+---
+
+### Main Research Question
+
+On November 4th 2025, Californians will cast their votes on Proposition 50, which adopts a congressional district map drawn by the state legislature (bill AB 604) until after the 2030 census.
+
+*Will the adoption of the new district map lead to an increase in partisan advantage relative to 2024? If so, by how much?*
+
+\
+
+### Materials Provided
+
+See the Ed post for links to the assignment repo with the data and starter documents.
+
+#### Context
+
+- California Statewide Special Election (<https://www.sos.ca.gov/elections/upcoming-elections/statewide-special-nov-4-2025>): official website for the election from the CA Secretary of State.
+- Statewide Database Precinct Data (<https://statewidedatabase.org/d20/g24.html>): source of precinct-level data from the 2024 General Election.
+- 2024 Election Geographic Data (<https://statewidedatabase.org/d20/g24_geo_conv.html>): source of shapefiles for precinct maps from 2024 General Election.
+- Proposed Congressional Map (<https://aelc.assembly.ca.gov/proposed-congressional-map>): source of shapefiles for district map proposed in AB 604.
+
+#### Data
+
+1. `g24_sov_by_g24_svprec.csv`: Voting results (Statement of Vote) at the voting precinct level for the 2024 general election (source: <https://statewidedatabase.org/d20/g24.html>).
+2. `g24-results-by-district.xlsx`: Voting results at the district level, broken down by county.
+3. `g24-candidates-by-district.csv`: Names of candidates running in each district race. 
+
+\
+
+### Part 1: Understanding the Data
+
+Visit the website of the California Secretary of State for their information on the upcoming election and Proposition 50 and learn about the process, the documents that they make available, and the data that they make available.
+
+Visit the website of the Statewide Database and learn about what data products are available from the 2024 General Election and any extra information they provide about how to interpret them. Also learn about who runs the database, where it is housed, and how it operates.
+
+\
+
+{{< pagebreak >}}
+
+### Part 2: Data Cleaning
+
+Read in the vote count data from the 2024 General Election at the precinct level. Clean the data frame to ensure values are recorded correctly, then write to desk a cleaned version of the csv to use in the rest of the analysis. Record your code, with comments, in `data-cleaning.qmd`
+
+
+*Tips*
+
+- Read the website of the statewide database carefully for disclaimers about the state of the data.
+- Inspect columns to ensure they're the correct type. If they're not, investigate why not and correct it.
+- Inspect the values in each column to ensure they have the values that you would expect.
+- Check that columns that you expect to have unique values indeed don't have replicates.
+
+\
+
+### Part 3: Exploratory Data Analysis
+
+Now that you have a clean data set for precinct-level vote totals from the 2024, election, now is your opporunity to scratch your curious itch and ask a few questions that can be answered with summary statistics or visualizations. Provide at least three such exploratory questions and answers in `exploratory-data-analysis.qmd`.
+
+Examples include: How many precincts/counties/districts featured two candidates from the same party? Which precinct/county/district had the closest race? Do our district totals agree with those found in the district-level results excel file? What is the range of total sizes of the precincts? Which races were the closest? Which races were the biggest blowouts? What proportion of incumbents were re-elected? Be creative here!
+
+\
+
+### Part 4: Calculating Gerrymandering
+
+For the 2024 general election, calculate the mean-median score and efficiency gap associated with the 2024 map of congressional districts. You should have everything you need in your cleaned precinct-level data frame. Record your code and results in `gerrymandering-metrics.qmd`
+
+*Tip*
+
+-  It may be helpful to write a function that takes a vector of votes across districts for party A and vector of votes for the party B and returns a vector of the number votes wasted by party A across districts.
+
+\
+
+### Part 5: Determining 2025 Districts of 2024 Precincts
+
+Coming soon! See course website.
+
+\
+
+### Part 6: Calculating Gerrymanding Again
+
+Return to `gerrymandering-metrics.qmd` and calculate the same two metrics using the same precinct-level election data from 2024 but the proposed district map of 2025.
+
+\
+
+### Part 7: Dashboard
+
+Coming soon! See course website.
+
+\
+
+### How to Submit
+
+Once you're happy with your work, render each of the Quarto documents one more time and commit both the .qmd files and the .pdf files that are produced. Then push these to your repo for your GSI to read. The dashboard is inherently interactive, so you'll just be able to submit the .qmd file that created it. However...
+
+*Optional:* Use `quarto publish` to publish your dashboard on the web through quarto pub. If you do, please add a `README.md` file to your repo before you submit it to point your GSI to the URL!
