@@ -1,28 +1,88 @@
 ---
 title: Exploratory Data Analysis
-format: typst
+format: pdf
 ---
 
 ### Question 1
+Which county had the closest win margin 
 
-Put your question here.
 
 ### Answer 1
 
-Put your answer here.
+```{r}
+library(dplyr)
+library(readr)
+library(sf)
+statement_of_vote2024<- read_csv("g24_sov_by_g24_svprec.csv")
+votes_by_sr_2024 = read_csv('state_g24_sov_data_by_g24_srprec.csv')
+g24_shp <- st_read("/Users/yeonwoo/Downloads/stat133/gerrymandering-yeonwoolee-sudo-main/data/mprec_state_g24_v01_shp")
+sr_prec_shp <- st_read("/Users/yeonwoo/Downloads/stat133/gerrymandering-yeonwoolee-sudo-main/data/srprec_state_g24_v01_shp/")
+proposed_map <- st_read("/Users/yeonwoo/Downloads/stat133/gerrymandering-yeonwoolee-sudo-main/data/AB604/")
+congress_statement_of_vote2024 <- statement_of_vote2024 |> 
+  select(SVPREC, SVPREC_KEY, CDDIST, TOTREG, CNGDEM01, CNGDEM02, CNGREP01, CNGREP02)
+total_congress_statement_of_vote2024 <- congress_statement_of_vote2024 |> 
+  group_by(CDDIST) |>  # group by congressional district
+  summarize(
+    CNGDEM01 = sum(as.numeric(CNGDEM01), na.rm = TRUE),
+    CNGDEM02 = sum(as.numeric(CNGDEM02), na.rm = TRUE),
+    CNGREP01 = sum(as.numeric(CNGREP01), na.rm = TRUE),
+    CNGREP02 = sum(as.numeric(CNGREP02), na.rm = TRUE),
+    total_registered_voters = sum(as.numeric(TOTREG), na.rm = TRUE),
+    total_cngdem_votes = CNGDEM01 + CNGDEM02,
+    total_cngrep_votes = CNGREP01 + CNGREP02
+  ) |>  # seeing total votes per party to assign a party affiliation per voting district
+  mutate(
+    winning_party = ifelse(total_cngdem_votes > total_cngrep_votes, "DEM", "REP")  # classify each district per party
+  )
+
+cleaned_sr_votes_2024 <- votes_by_sr_2024 |>
+  select(
+    SRPREC, SRPREC_KEY,CDDIST, 
+    TOTREG, CNGDEM01, CNGDEM02, CNGREP01, CNGREP02
+  ) |>
+  mutate(
+    CNGDEM01 = as.numeric(CNGDEM01),
+    CNGDEM02 = as.numeric(CNGDEM02),
+    CNGREP01 = as.numeric(CNGREP01),
+    CNGREP02 = as.numeric(CNGREP02),
+    total_cngdem_votes = CNGDEM01 + CNGDEM02,
+    total_cngrep_votes = CNGREP01 + CNGREP02
+  )
+    
+```
+
 
 ### Question 2
 
-Put your question here.
+Which counties had two candidates from the same party? 
 
 ### Answer 2
 
 Put your answer here.
 
+```{r}
+
+
+
+```
+```{r}
+
+```
 ### Question 3
 
-Put your question here.
+Which county had the highest voter turnout compared to the amount of registered voters. 
 
 ### Answer 3
 
-Put your answer here.
+```{r}
+library(dplyr)
+highest_turnout <- total_congress_statement_of_vote2024|> 
+    mutate(
+        total_voters = total_cngdem_votes + total_cngrep_votes, 
+        highest_ratio = total_voters/total_registered_voters)|> 
+    filter(max(highest_ratio)==highest_ratio )|> 
+    select(CDDIST, highest_ratio)
+highest_turnout
+
+```
+District #3 had the highest voter turnout compared to registered voters with a voter turnout rate of 78.4%
