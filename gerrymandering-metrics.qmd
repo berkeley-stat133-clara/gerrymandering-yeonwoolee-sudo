@@ -1,10 +1,55 @@
 ---
 title: Gerrymandering Metrics
-format: typst
+format: pdf
 ---
 
 ### 2024 Election Results and the 2024 District Map
 
+```{r}
+#mean median score and efficiency gap 
+
+#1. Mean-median score 
+mean_median = total_congress_statement_of_vote2024|>
+    mutate(total_dem = CNGDEM01 + CNGDEM02, 
+        total_rep = CNGREP01 + CNGREP02,
+        proportion = total_dem/(total_rep + total_dem))|>
+        summarize(mean_median_dem = mean(proportion) - median(proportion))
+#The mean median score associated with the map is -0.0116 which indicates the district map is skewed towards the Republican party. 
+
+#2. Efficiency Gap
+party_D <- total_congress_statement_of_vote2024$total_cngdem_votes
+party_R <- total_congress_statement_of_vote2024$total_cngrep_votes
+wasted_votes <- function(party_d, party_r){
+    wasted_votes = c(1:length(party_d))
+    for(i in c(1:length(party_d))){
+    if (party_d[i] > party_r[i]){
+        wasted_votes[i] = party_d[i] - 50 -1} 
+    else{
+        wasted_votes[i]= party_d[i]}}
+        return (sum(wasted_votes))} 
+        
+wasted_d <- wasted_votes(party_D, party_R)
+wasted_r <- wasted_votes(party_R, party_D)
+total_votes <- sum(party_D+party_R )
+EG <- (wasted_d - wasted_r)/ total_votes
+EG
+# The efficency gap of the Democrats is 0.2146568, which is indicative that the Democrats are wasting more votes than the Republicans. 
+
+#joining the sr vote data to the SR precinct geometires
+sr_votes_geo_join <- sr_prec_shp |> 
+    left_join(cleaned_sr_votes_2024, by = "SRPREC_KEY")
+sr_votes_geo_join <- sr_votes_geo_join |>
+    st_transform(3310) |>
+    st_set_precision(1) |>
+    st_make_valid() |>
+    st_collection_extract("POLYGON")
+
+proposed_map <- proposed_map |>
+    st_transform(3310)
+sr_vote_intersections <- st_intersection(
+    sr_votes_geo_join, proposed_map|>
+        select(DISTRICT = CDDIST))
+```
 
 
 ### 2024 Election Results and the proposed 2025 District Map
